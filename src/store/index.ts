@@ -1,5 +1,5 @@
 import createSagaMiddleware from 'redux-saga'
-import list from '../reducers/list'
+import rootReducer from '../reducers/rootReducer'
 import saga from '../sagas'
 import { createLogger } from 'redux-logger'
 import { createStore, applyMiddleware } from 'redux'
@@ -7,7 +7,7 @@ import { createStore, applyMiddleware } from 'redux'
 const sagaMiddleware = createSagaMiddleware()
 
 export default createStore(
-  list,
+  rootReducer,
   applyMiddleware(
     sagaMiddleware,
     createLogger(),

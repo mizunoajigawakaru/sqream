@@ -1,8 +1,29 @@
+html,
+body {
+  height: 100%;
+}
+
 body {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: .5px;
   line-height: 1.5;
-  color: #2c3e50;
+  color: #34495e;
+}
+
+#root {
+  height: 100%;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
