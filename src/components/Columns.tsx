@@ -16,7 +16,7 @@ const SColumns = styled.div`
   }
 
   li {
-    padding: 4px 6px;
+    padding: 4px 12px;
     cursor: pointer;
   }
 `

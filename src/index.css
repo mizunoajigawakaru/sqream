@@ -4,7 +4,7 @@ body {
 }
 
 body {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: .5px;
@@ -22,8 +22,30 @@ h3 {
   margin: 0;
 }
 
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 18px;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+button {
+  background-color: transparent;
+  border: solid 1px #666;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  padding: 6px 12px;
+  appearance: #34495e;
+}
+
+button[disabled] {
+  opacity: .6;
 }

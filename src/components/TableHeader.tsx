@@ -57,7 +57,7 @@ const TableHeader: React.SFC<IProps> = ({
   connectDragSource,
 }) => {
   return connectDragSource(
-    <li style={{ width }}>{children}: ({width})</li>
+    <li style={{ width }}>{children}</li>
   )
 }
 
