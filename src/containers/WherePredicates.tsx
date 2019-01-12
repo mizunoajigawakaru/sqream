@@ -33,6 +33,10 @@ const SWherePredicates = styled.div`
   padding: 16px;
   border-bottom: solid 1px #787878;
 
+  h2 {
+    margin-bottom: 12px;
+  }
+
   .wherePredicateFromItems {
     display: flex;
 
@@ -44,20 +48,40 @@ const SWherePredicates = styled.div`
 
 const operatorList = [
   {
-    name: 'Equal',
+    name: 'equals',
     value: '=',
   },
   {
-    name: 'Greater',
-    value: '>',
-  },
-  {
-    name: 'Less',
+    name: 'less than',
     value: '<',
   },
   {
-    name: 'Not Equal',
+    name: 'greater than',
+    value: '>',
+  },
+  {
+    name: 'less or equal',
+    value: '<=',
+  },
+  {
+    name: 'greater or equal',
+    value: '>=',
+  },
+  {
+    name: 'not equal to',
     value: '!=',
+  },
+  {
+    name: 'contains',
+    value: '%like%',
+  },
+  {
+    name: 'does not contain',
+    value: '!%like%',
+  },
+  {
+    name: 'starts with',
+    value: 'like%',
   },
 ]
 
