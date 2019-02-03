@@ -1,13 +1,14 @@
 import * as React from 'react'
 import { DragSource } from 'react-dnd'
 
-interface IColumn {
-  name: string,
-  field: string,
-}
+// interface IColumn {
+//   name: string,
+//   field: string,
+//   type: string,
+// }
 
 interface IColumnItemProps {
-  column: IColumn
+  column: any
   addSelectedColumn: any
   connectDragSource?: any
 }
@@ -38,6 +39,13 @@ function collect(connect: any) {
   }
 }
 
+const icons = {
+  INTEGER: 'looks_one',
+  STRING: 'text_format',
+  DATE: 'date_range',
+  MASTER: 'dns',
+}
+
 const ColumnItem: React.SFC<IColumnItemProps> = ({
   column,
   connectDragSource,
@@ -46,7 +54,8 @@ const ColumnItem: React.SFC<IColumnItemProps> = ({
     <li
       key={column.field}
     >
-      {column.name}
+      <i className="material-icons">{icons[column.type]}</i>
+      <span>{column.name}</span>
     </li>
   )
 }

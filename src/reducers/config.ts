@@ -2,12 +2,14 @@ import { handleActions } from 'redux-actions'
 import { includes } from 'lodash'
 
 export interface ConfigState {
-  mainTable: string
-  selectedColumns: string[]
+  mainTable: string | null,
+  joinTables: any[],
+  selectedColumns: string[],
 }
 
 const initialState: ConfigState = {
-  mainTable: 'USERS',
+  mainTable: null,
+  joinTables: [],
   selectedColumns: [],
 }
 
@@ -18,6 +20,15 @@ interface IConfigAction {
 
 export default handleActions(
   {
+    SET_TABLES: (state: ConfigState = initialState, action: IConfigAction): ConfigState => {
+      const { mainTable, joinTables } = action.payload
+
+      return {
+        ...state,
+        mainTable,
+        joinTables,
+      }
+    },
     ADD_SELECTED_COLUMN: (state: ConfigState = initialState, action: IConfigAction): ConfigState => {
       const { column, position } = action.payload
       const nextSelectedColumns: string[] = [...state.selectedColumns];

@@ -18,6 +18,16 @@ const SColumns = styled.div`
   li {
     padding: 4px 12px;
     cursor: pointer;
+
+    .material-icons {
+      margin-right: 8px;
+      font-size: 20px;
+      vertical-align: middle;
+    }
+
+    span {
+      vertical-align: middle;
+    }
   }
 `
 

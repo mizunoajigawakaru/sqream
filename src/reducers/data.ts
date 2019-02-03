@@ -2,6 +2,7 @@ import { handleActions } from 'redux-actions'
 import { get } from 'lodash'
 
 const initialState = {
+  tables: [],
   columns: [],
   records: [],
   fetching: {
@@ -11,6 +12,11 @@ const initialState = {
 
 export default handleActions(
   {
+    FETCH_TABLES_SUCCESS: (state, action) => ({
+      ...state,
+      tables: get(action, 'payload.tables'),
+    }),
+
     FETCH_TABLE_COLUMNS_START: state => ({
       ...state,
       fetching: {

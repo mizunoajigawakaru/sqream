@@ -37,6 +37,15 @@ function* fetchList(action: any) {
   }
 }
 
+function* fetchTables() {
+  try {
+    const { data } = yield call(() => axios.get('http://localhost:3000/tables'), [])
+    yield put(dataActions.fetchTablesSuccess({ tables: data }))
+  } catch (e) {
+    yield put(dataActions.fetchTablesFailure({ message: e.message }))
+  }
+}
+
 function* fetchTableColumns(action: any) {
   try {
     const params = {
@@ -68,6 +77,7 @@ function* listSaga() {
   yield takeEvery('FETCH_FOLDER_LIST_START', fetchFolders)
   yield takeEvery('FETCH_REPORT_LIST_START', fetchList)
 
+  yield takeEvery('FETCH_TABLES_START', fetchTables)
   yield takeEvery('FETCH_TABLE_COLUMNS_START', fetchTableColumns)
   yield takeEvery('FETCH_TABLE_RECORDS_START', fetchTableRecords)
 }

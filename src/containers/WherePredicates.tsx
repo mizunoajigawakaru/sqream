@@ -37,8 +37,21 @@ const SWherePredicates = styled.div`
     margin-bottom: 12px;
   }
 
+  .FilterList {
+    margin-bottom: 12px;
+  }
+
+  .FilterList_Item + .FilterList_Item {
+    margin-top: 10px;
+  }
+
   .wherePredicateFromItems {
     display: flex;
+
+    .column,
+    .value {
+      font-weight: bold;
+    }
 
     li + li {
       margin-left: 12px;
@@ -96,9 +109,18 @@ function getOperatorName(value: string): string {
 
 function getFilterStringValues(columns: IColumn[], values: IFilter) {
   return [
-    getColumnName(columns, values.column),
-    getOperatorName(values.operator),
-    values.value
+    {
+      type: 'column',
+      value: getColumnName(columns, values.column),
+    },
+    {
+      type: 'operator',
+      value: getOperatorName(values.operator),
+    },
+    {
+      type: 'value',
+      value: `"${values.value}"`,
+    },
   ]
 }
 
@@ -130,7 +152,7 @@ const WherePredicateForms = ({
 
   return (
     <div>
-      <ul>
+      <ul className="FilterList">
         {fields.map((wherePredicate: any, index: number) => {
           const removeFilter = () => {
             fields.remove(index)
@@ -159,9 +181,13 @@ const WherePredicateForms = ({
           }
 
           return (
-            <li key={index}>
+            <li
+              key={index}
+              className="FilterList_Item"
+            >
               {editingFilter === index ?
                 <ul className="wherePredicateFromItems">
+                  <li>{index + 1}.</li>
                   <li>
                     <Field
                       name={`${wherePredicate}.column`}
@@ -204,8 +230,9 @@ const WherePredicateForms = ({
                 </ul>
                 :
                 <ul className="wherePredicateFromItems">
+                  <li>{index + 1}.</li>
                   {getFilterStringValues(columns, fields.get(index)).map(filter => (
-                    <li>{ filter }</li>
+                    <li className={filter.type}>{ filter.value }</li>
                   ))}
                   <li>
                     <button

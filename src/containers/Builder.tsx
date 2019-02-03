@@ -12,11 +12,16 @@ import Util from '../services/util'
 import dataActions from '../actions/data'
 import configActions from '../actions/config'
 
+import TableSelector from '../components/TableSelector'
 import TableArea from '../components/TableArea'
 import Columns from '../components/Columns'
 import WherePredicates from './WherePredicates'
 
 const { useEffect } = React
+
+interface ITable {
+  name: string,
+}
 
 interface IColumn {
   name: string,
@@ -29,6 +34,7 @@ interface IStore {
     selectedColumns: string[],
   },
   data: {
+    tables: ITable[],
     columns: IColumn[],
     records: any[],
   },
@@ -41,6 +47,7 @@ interface IFilter {
 }
 
 interface IStateToProps {
+  tables: ITable[],
   mainTable: string,
   selectedColumns: string[],
   columns: IColumn[],
@@ -48,12 +55,21 @@ interface IStateToProps {
 }
 
 interface IDispatchToProps {
+  setTables: (payload: any) => any,
   fetchTableColumnsStart: (mainTable: string) => any,
   fetchTableRecordsStart: (mainTable: string, filters: IFilter[]) => any,
   addSelectedColumn: (column: string) => any,
 }
 
-const mapStateToProps = (state: IStore) => ({
+const getMode = (queryString: string): string => {
+  const params = new URLSearchParams(queryString)
+  const mode = params.get('mode')
+  return typeof mode === 'string' ? mode : 'create'
+}
+
+const mapStateToProps = (state: IStore, ownProps: any) => ({
+  mode: getMode(ownProps.location.search),
+  tables: state.data.tables,
   mainTable: state.config.mainTable,
   selectedColumns: state.config.selectedColumns,
   columns: state.data.columns,
@@ -62,8 +78,10 @@ const mapStateToProps = (state: IStore) => ({
 
 const mapDispatchToProps = (dispatch: any) => bindActionCreators(
   {
+    fetchTablesStart: dataActions.fetchTablesStart,
     fetchTableColumnsStart: dataActions.fetchTableColumnsStart,
     fetchTableRecordsStart: dataActions.fetchTableRecordsStart,
+    setTables: configActions.setTables,
     addSelectedColumn: configActions.addSelectedColumn,
     changeColumnIndex: configActions.changeColumnIndex,
   },
@@ -71,10 +89,15 @@ const mapDispatchToProps = (dispatch: any) => bindActionCreators(
 )
 
 interface IProps {
+  history: any
+  mode: string
+  tables: ITable[]
   mainTable: string
   columns: IColumn[]
   records: any[]
   selectedColumns: string[]
+  setTables: any
+  fetchTablesStart: any
   fetchTableColumnsStart: any
   fetchTableRecordsStart: any
   addSelectedColumn: any
@@ -149,7 +172,7 @@ const WrappedComponent: React.SFC<MeasuredComponentProps & WrappedComponentProps
 
   return (
     <div ref={measureRef}>
-      {column}: <span style={{ display: 'inline-block', width: '100px' }}>width({measuredWidth})</span>
+      {column}
     </div>
   )
 }
@@ -199,11 +222,19 @@ class Builder extends React.Component<IProps, IState> {
     this.setColumnWidth = this.setColumnWidth.bind(this)
     this.setIndicatorIndex = this.setIndicatorIndex.bind(this)
     this.updateColumnOrder = this.updateColumnOrder.bind(this)
+    this.renderBuilder = this.renderBuilder.bind(this)
+    this.renderTableSelector = this.renderTableSelector.bind(this)
+    this.fetchDataByTables = this.fetchDataByTables.bind(this)
   }
 
   componentDidMount() {
-    this.props.fetchTableColumnsStart({ mainTable: this.props.mainTable })
-    this.props.fetchTableRecordsStart({ mainTable: this.props.mainTable })
+    this.props.fetchTablesStart()
+  }
+
+  fetchDataByTables(mainTable: string) {
+    this.props.history.push('/report?mode=edit')
+    this.props.fetchTableColumnsStart({ mainTable })
+    this.props.fetchTableRecordsStart({ mainTable, filters: [] })
   }
 
   updateColumnOrder(currentColumnIndex: number, nextColumnIndex: number) {
@@ -247,7 +278,7 @@ class Builder extends React.Component<IProps, IState> {
     }
   }
 
-  render() {
+  renderBuilder() {
     const indicatorLeftOffset = this.state.indicatorPositions[this.state.indicatorIndex]
 
     return (
@@ -303,6 +334,20 @@ class Builder extends React.Component<IProps, IState> {
         </SRightArea>
       </SBuilder>
     );
+  }
+
+  renderTableSelector() {
+    return (
+      <TableSelector
+        tables={this.props.tables}
+        setTables={this.props.setTables}
+        fetchDataByTables={this.fetchDataByTables}
+      />
+    )
+  }
+
+  render() {
+    return this.props.mode === 'create' ? this.renderTableSelector() : this.renderBuilder()
   }
 }
 
