@@ -1,2 +1,2 @@
 # sqream (in progress)
-GUI based SQL builder App.
+GUI based SQL query builder App.
